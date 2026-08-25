@@ -51,14 +51,8 @@ public class UsuarioController {
     return UsuarioResponseDTO.fromEntity(
             usuarioService.buscarPorEmail(email)
     );
-    } 
-    
-    @GetMapping("/descricao")
-    public List<ItemResponseDTO> buscarPorDescricao(@RequestParam String descricao) {
-    return itemService.buscarPorDescricao(descricao).stream()
-            .map(ItemResponseDTO::fromEntity)
-            .toList();
-    }      
+   
+    }     
    
     // CRUD
     
