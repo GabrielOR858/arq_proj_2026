@@ -23,7 +23,20 @@ public class ItemService {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado com id " + id));
     }
+        // Buscas
+    public List<Item> buscarPorTitulo(String titulo) {
+    return itemRepository.findByTituloContainingIgnoreCase(titulo);
+    }
 
+    public List<Item> buscarPorDescricao(String descricao) {
+    return itemRepository.findByDescricaoContainingIgnoreCase(descricao);
+    }
+
+    public List<Item> buscarPorUsuario(Long usuarioId) {
+    return itemRepository.findByUsuarioProprietarioId(usuarioId);
+    }
+    
+    // CRUD
     public Item criar(Item item, Long usuarioId) {
         Usuario dono = usuarioService.buscarPorId(usuarioId);
         item.setUsuarioProprietario(dono);
@@ -43,4 +56,5 @@ public class ItemService {
         Item item = buscarPorId(id);
         itemRepository.delete(item);
     }
+
 }

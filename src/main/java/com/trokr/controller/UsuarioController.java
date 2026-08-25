@@ -1,5 +1,6 @@
 package com.trokr.controller;
 
+import com.trokr.dto.ItemResponseDTO;
 import com.trokr.dto.UsuarioRequestDTO;
 import com.trokr.dto.UsuarioResponseDTO;
 import com.trokr.model.Usuario;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -31,12 +33,35 @@ public class UsuarioController {
                 .map(UsuarioResponseDTO::fromEntity)
                 .toList();
     }
-
+    // BUSCAS 
     @GetMapping("/{id}")
     public UsuarioResponseDTO buscarPorId(@PathVariable Long id) {
         return UsuarioResponseDTO.fromEntity(usuarioService.buscarPorId(id));
     }
 
+    @GetMapping("/buscar")
+    public List<UsuarioResponseDTO> buscarPorNome(@RequestParam String nome) {
+    return usuarioService.buscarPorNome(nome).stream()
+            .map(UsuarioResponseDTO::fromEntity)
+            .toList();
+    }
+
+    @GetMapping("/email")
+    public UsuarioResponseDTO buscarPorEmail(@RequestParam String email) {
+    return UsuarioResponseDTO.fromEntity(
+            usuarioService.buscarPorEmail(email)
+    );
+    } 
+    
+    @GetMapping("/descricao")
+    public List<ItemResponseDTO> buscarPorDescricao(@RequestParam String descricao) {
+    return itemService.buscarPorDescricao(descricao).stream()
+            .map(ItemResponseDTO::fromEntity)
+            .toList();
+    }      
+   
+    // CRUD
+    
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criar(@Valid @RequestBody UsuarioRequestDTO dto) {
         Usuario usuario = new Usuario();

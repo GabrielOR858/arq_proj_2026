@@ -18,12 +18,33 @@ public class UsuarioService {
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }
-
+    
+    
+    
+    // Buscas
+    
+    
     public Usuario buscarPorId(Long id) {
-        return usuarioRepository.findById(id)
+    return usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado com id " + id));
     }
 
+    public Usuario buscarPorEmail(String email) {
+    return usuarioRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                            "Usuário não encontrado com email " + email
+                    ));
+    }
+    
+    public List<Usuario> buscarPorNome(String nome) {
+    return usuarioRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+
+
+       
+    // CRUD
     public Usuario criar(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }

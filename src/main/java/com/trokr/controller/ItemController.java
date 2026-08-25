@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,28 +33,70 @@ public class ItemController {
                 .toList();
     }
 
+    // BUSCAS
+
     @GetMapping("/{id}")
     public ItemResponseDTO buscarPorId(@PathVariable Long id) {
         return ItemResponseDTO.fromEntity(itemService.buscarPorId(id));
     }
 
+    // Busca pelo título
+    @GetMapping("/buscar")
+    public List<ItemResponseDTO> buscarPorTitulo(@RequestParam String titulo) {
+        return itemService.buscarPorTitulo(titulo).stream()
+                .map(ItemResponseDTO::fromEntity)
+                .toList();
+    }
+
+    // Busca pela descrição
+    @GetMapping("/descricao")
+    public List<ItemResponseDTO> buscarPorDescricao(@RequestParam String descricao) {
+        return itemService.buscarPorDescricao(descricao).stream()
+                .map(ItemResponseDTO::fromEntity)
+                .toList();
+    }
+
+    // Busca itens de um usuário
+    @GetMapping("/usuario/{usuarioId}")
+    public List<ItemResponseDTO> buscarPorUsuario(@PathVariable Long usuarioId) {
+        return itemService.buscarPorUsuario(usuarioId).stream()
+                .map(ItemResponseDTO::fromEntity)
+                .toList();
+    }
+
+    // CRUD
+
     @PostMapping
-    public ResponseEntity<ItemResponseDTO> criar(@Valid @RequestBody ItemRequestDTO dto) {
+    public ResponseEntity<ItemResponseDTO> criar(
+            @Valid @RequestBody ItemRequestDTO dto) {
+
         Item item = new Item();
         item.setTitulo(dto.titulo());
         item.setDescricao(dto.descricao());
 
         Item salvo = itemService.criar(item, dto.usuarioId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(ItemResponseDTO.fromEntity(salvo));
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ItemResponseDTO.fromEntity(salvo));
     }
 
     @PutMapping("/{id}")
-    public ItemResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody ItemRequestDTO dto) {
+    public ItemResponseDTO atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody ItemRequestDTO dto) {
+
         Item dadosAtualizados = new Item();
         dadosAtualizados.setTitulo(dto.titulo());
         dadosAtualizados.setDescricao(dto.descricao());
 
-        return ItemResponseDTO.fromEntity(itemService.atualizar(id, dadosAtualizados, dto.usuarioId()));
+        return ItemResponseDTO.fromEntity(
+                itemService.atualizar(
+                        id,
+                        dadosAtualizados,
+                        dto.usuarioId()
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
