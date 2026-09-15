@@ -40,7 +40,7 @@ public class ItemController {
         return ItemResponseDTO.fromEntity(itemService.buscarPorId(id));
     }
 
-    // Busca pelo título
+    
     @GetMapping("/buscar")
     public List<ItemResponseDTO> buscarPorTitulo(@RequestParam String titulo) {
         return itemService.buscarPorTitulo(titulo).stream()
@@ -48,7 +48,7 @@ public class ItemController {
                 .toList();
     }
 
-    // Busca pela descrição
+    
     @GetMapping("/descricao")
     public List<ItemResponseDTO> buscarPorDescricao(@RequestParam String descricao) {
         return itemService.buscarPorDescricao(descricao).stream()
@@ -56,7 +56,7 @@ public class ItemController {
                 .toList();
     }
 
-    // Busca itens de um usuário
+    
     @GetMapping("/usuario/{usuarioId}")
     public List<ItemResponseDTO> buscarPorUsuario(@PathVariable Long usuarioId) {
         return itemService.buscarPorUsuario(usuarioId).stream()
