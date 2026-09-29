@@ -7,12 +7,16 @@ spring:
     username: ${DB_USER:trokr_user}
     password: ${DB_PASSWORD:changeme_local_dev}
 
+  mongodb:
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
+    database: ${MONGO_DATABASE:trokr_logs}
+    username: ${MONGO_USER:trokr}
+    password: ${MONGO_PASSWORD:trokr123}
+    authentication-database: ${MONGO_AUTH_DB:admin}
+
   jpa:
     hibernate:
-      # ddl-auto=update é uma simplificação temporária para o início do curso:
-      # o Hibernate cria/ajusta as tabelas sozinho a partir das entidades.
-      # Isso será substituído por migrations versionadas (Flyway/Liquibase)
-      # em uma aula futura, quando controle de schema passar a importar.
       ddl-auto: update
     show-sql: true
     properties:
@@ -23,6 +27,4 @@ management:
   endpoints:
     web:
       exposure:
-        # Expor só o necessário nesta fase: health (usado como /health do
-        # enunciado) e info. Nada de segurança/autenticação em cima disso ainda.
         include: health,info
