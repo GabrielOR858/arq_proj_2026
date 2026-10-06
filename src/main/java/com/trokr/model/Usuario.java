@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import jakarta.persistence.Column;
 
 /**
  * Um usuário da plataforma: quem oferece e quem recebe nas trocas.

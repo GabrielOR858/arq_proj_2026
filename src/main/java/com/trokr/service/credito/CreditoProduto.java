@@ -15,7 +15,7 @@ public class CreditoProduto implements EstrategiaCredito {
 
     @Override
     public int calcular(Item item) {
-        // TODO: definir a regra de créditos para produtos
-        return 0;
+    
+        return 10;
     }
 }
