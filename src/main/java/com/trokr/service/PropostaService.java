@@ -12,6 +12,20 @@ import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * Facade do subsistema de propostas.
+ *
+ * Coordena as operações sobre Proposta, delegando as regras de transição
+ * aos estados da proposta, persistindo os dados por meio do repository
+ * e publicando o evento de troca concluída quando a negociação é finalizada.
+ *
+ * O serviço não implementa diretamente as regras do State nem o cálculo
+ * de créditos da Strategy. Sua responsabilidade é coordenar a ordem
+* das operações necessárias para cada caso de uso.
+ */
+
+
 @Service
 public class PropostaService {
 

@@ -1,12 +1,11 @@
 package com.trokr.dto;
 
+import com.trokr.model.CategoriaItem;
 import com.trokr.model.Item;
 import java.time.LocalDateTime;
 
 /**
- * Dados de saída de um Item. Os dados do dono são achatados aqui
- * (usuarioId/usuarioNome) para manter o DTO simples, em vez de criar mais
- * uma classe aninhada só para isso.
+ * Dados de saída de um Item.
  */
 public record ItemResponseDTO(
         Long id,
@@ -14,7 +13,8 @@ public record ItemResponseDTO(
         String descricao,
         Long usuarioId,
         String usuarioNome,
-        LocalDateTime dataCriacao
+        LocalDateTime dataCriacao,
+        CategoriaItem categoria
 ) {
 
     public static ItemResponseDTO fromEntity(Item item) {
@@ -24,7 +24,8 @@ public record ItemResponseDTO(
                 item.getDescricao(),
                 item.getUsuarioProprietario().getId(),
                 item.getUsuarioProprietario().getNome(),
-                item.getDataCriacao()
+                item.getDataCriacao(),
+                item.getCategoria()
         );
     }
 }
