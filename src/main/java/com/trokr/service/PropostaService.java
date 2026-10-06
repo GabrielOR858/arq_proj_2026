@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import com.trokr.event.TrocaConcluidaEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import com.trokr.model.state.Status;
 
 import java.time.LocalDateTime;
 
@@ -189,20 +190,35 @@ public class PropostaService {
     return salva;
     }
     
-    private TrocaConcluidaEvent construirEventoDeTrocaConcluida(
-        Proposta proposta) {
+    private TrocaConcluidaEvent construirEventoDeTrocaConcluida(Proposta proposta) {
 
     Proposta raiz = proposta.ehContraproposta()
             ? proposta.getPropostaAnterior()
             : proposta;
 
+    Proposta contraproposta;
+
+    if (proposta.ehContraproposta()) {
+        contraproposta = proposta;
+    } else {
+        contraproposta = propostaRepository
+                .findByPropostaAnteriorIdAndStatus(
+                        proposta.getId(),
+                        Status.NEGOCIADO
+                )
+                .orElseThrow(() -> new IllegalStateException(
+                        "Contraproposta negociada não encontrada para a proposta: "
+                                + proposta.getId()
+                ));
+    }
+
     return new TrocaConcluidaEvent(
             raiz.getId(),
             raiz.getUsuario(),
-            proposta.getUsuario(),
+            contraproposta.getUsuario(),
             raiz.getItem(),
-            proposta.getItem(),
+            contraproposta.getItem(),
             LocalDateTime.now()
     );
-    }
+}
 }

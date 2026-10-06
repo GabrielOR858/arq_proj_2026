@@ -15,7 +15,7 @@ public class CreditoExperiencia implements EstrategiaCredito {
 
     @Override
     public int calcular(Item item) {
-        // TODO: definir a regra de créditos para experiências
+        
         return 30;
     }
 }
